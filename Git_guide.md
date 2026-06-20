@@ -187,9 +187,28 @@ git credential reject
 ## Lưu ý bảo mật
 
 - **Không lưu mật khẩu hoặc token trực tiếp vào file** trong repository.
+- **Không paste token vào chat, email, hay bất kỳ nơi nào có thể bị lưu lại** — GitHub tự động quét và vô hiệu hóa token bị lộ, gây lỗi 403.
 - Ưu tiên dùng **Personal Access Token** thay vì mật khẩu tài khoản.
 - Sau khi dùng xong, có thể thu hồi token trên GitHub: **Settings → Developer settings → Personal access tokens**.
 - Không commit file `.env` hoặc bất kỳ file nào chứa thông tin xác thực.
+
+### Lỗi 403 – Permission denied
+
+```
+remote: Permission to <repo>.git denied to <user>.
+fatal: unable to access '...': The requested URL returned error: 403
+```
+
+Nguyên nhân thường gặp:
+1. **Token bị lộ và GitHub tự thu hồi** → Tạo token mới, cập nhật remote URL
+2. **Token không có scope `repo`** → Tạo token mới, chọn đúng scope
+3. **Token hết hạn** → Tạo token mới
+
+Cập nhật remote URL sau khi có token mới:
+
+```bash
+git remote set-url origin https://nguyendangnhan1609:<TOKEN_MỚI>@github.com/nguyendangnhan1609/bingo2026.git
+```
 
 ---
 
