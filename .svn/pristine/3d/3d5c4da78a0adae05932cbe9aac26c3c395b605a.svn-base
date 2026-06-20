@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin | Brycen Bingo V3.0</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="./image/favicon.ico">
+    <link rel="stylesheet" href="styleAdmin.css"/>
+    <!-- <link rel="stylesheet" href="../lib/bootstrap.min.css" > -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="./lib/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+    <div id="modal-mess" class="modal-custom" onclick="closeModal(this.id)">
+        <div class="modal-content">
+            <h4 class="m-0">Đã làm mới Bingo!</h4>
+        </div>
+    </div>
+    <div id="modal-timer" class="modal-custom" onclick="closeModal(this.id)">
+        <div class="modal-content">
+            <h4 class="m-0">Hẹn giờ làm mới Bingo thành công!</h4>
+        </div>
+    </div>
+    <div id="modal-notification" class="modal-custom" onclick="closeModal(this.id)">
+        <div class="modal-content">
+            <h4 class="m-0">Gửi thông báo thành công!</h4>
+        </div>
+    </div>
+    <section> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span>
+    </section>
+        <div class="signin" id="signin-box">
+        <div class="content">
+            <h2>Sign In</h2>
+            <div class="form" autocomplete="off">
+                <!-- <input name="username" type="text" id="myInput" required autocomplete="off"> <i>Username</i>
+                <input name="password" type="password" required id="pass"> <i>Password</i>
+                <button>Submit</button> -->
+                <div class="inputBox">
+                    <input name="username" type="text" id="myInput" required autocomplete="off"> <i>Username</i>
+                </div>
+                <div class="inputBox">
+                    <input name="password" type="password" required id="pass" onkeypress="pressLogin(event)" autocomplete="off"> <i>Password</i>
+                </div>
+                <div class="login-notification" id="login-notification"></div>
+                <div class="inputBox">
+                    <input type="submit" value="Login" onclick="login()">
+                </div>
+                <!-- <div class="links"> <a href="#">Forgot Password</a> <a href="#">Signup</a></div> -->
+            </div>
+        </div>
+    </div>
+    <div class="dashboard hidden" id="dashboard">
+        <div class="headerDashborad">
+            <h1 class="titleDashboard">Dashboard</h1>
+            <div class="information">
+                <h3 id="username"></h3>
+                <button class="logoutBtn" id="logoutBtn" onclick="logout()">Đăng xuất</button>
+            </div>
+        </div>
+        <hr>
+        <div class="content">
+            <div class="actions">
+                <div class="contentActions" id="contentActions">
+                    <form name="formAdmin">
+                    <div class="row">
+                        <div class="label">
+                            <p>Chế độ</p>
+                        </div>
+                        <!-- <div class="row"> -->
+                            <!-- <form name="myFormRadio"> -->
+                                <label class="container">Tự dộng chạy
+                                    <input type="radio" id="autoRun" name="mode" value="autoRun" checked="checked">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="container">Dừng lại khi trò chơi kết thúc
+                                    <input type="radio" id="stopComplete" name="mode" value="stopComplete">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="container">Hẹn giờ
+                                    <input type="radio" id="timer" name="mode" value="timer">
+                                    <span class="checkmark"></span>
+                                </label>
+                            <!-- </form> -->
+                        <!-- </div> -->
+                    </div>
+                    <div class="row">
+                        <div class="label">
+                            <p>Mã số vòng chơi</p>
+                        </div>
+                        <div class="inputBox">
+                            <input class="gameCode" name="gameCode" type="text" id="gameCode">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="label">
+                            <p>Số người chiến thắng trong 1 lượt chơi</p>
+                        </div>
+                        <div class="inputBox">
+                            <input class="totalWinner" name="totalWinner" type="number" id="totalWinner" min="1" value="5" onkeyup="validateTotalWinner(this.id)">
+                            <p class="errorInput errTotalWinner" id="errTotalWinner"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="label">
+                            <p>Thời gian chờ giữa các lượt chơi(phút)</p>
+                        </div>
+                        <div class="inputBox">
+                            <input class="autoRestartTime" name="autoRestartTime" type="number" id="autoRestartTime" keyup min="1" max="1440" value="3" onkeyup="validateAutoRestartTime(this.id)" required>
+                            <p class="errorInput errAutoRestartTime" id="errAutoRestartTime"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="label">
+                            <p>Thời gian bắt đầu game mới</p>
+                        </div>
+                        <div class="inputBox">
+                            <input class="newGameTime" name="newGameTime" type="time" id="newGameTime" value="17:30">
+                        </div>
+                        <!-- <div class="inputBox">
+                            <div class="input-group mr-2">
+                                <input id="hour" type="number" class="form-control" value="17">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">H</span>
+                                </div>
+                            </div>
+                            <div class="input-group mr-2">
+                                <input id="minute" type="number" class="form-control" value="15">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">M</span>
+                                </div>
+                            </div>
+                            <div class="input-group mr-2">
+                                <input id="second" type="number" class="form-control" value="10">
+                                <div class="input-group-append">
+                                    <span class="input-group-text text-danger">S</span>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <!-- Thành: xóa đếm ngược 
+                    <div class="row" style="display: none;">
+                        <div class="label">
+                            <p>Đếm ngược restart</p>
+                        </div>
+                        <div class="inputBox">
+                            <p class="countDownRestart" id="countDownRestart">0</p>
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="label">
+                            <p>Thời gian xổ số(giây)</p>
+                        </div>
+                        <div class="inputBox">
+                            <input class="nextNumberTime" name="nextNumberTime" type="number" id="nextNumberTime" min="1" value="10">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="label">
+                            <p>Phiên bản</p>
+                        </div>
+                        <label class="container">Version 100
+                            <input type="radio" id="ver100" name="version" value="ver100" checked="checked">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="container">Version 75
+                            <input type="radio" id="ver75" name="version" value="ver75">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="container">Version 50
+                            <input type="radio" id="ver50" name="version" value="ver50">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="row">
+                        <div class="label">
+                            <p>Chat</p>
+                        </div>
+                        <label class="container">Chat ON
+                            <input type="radio" id="chatOn" name="chatFlag" value="true" checked>
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="container">Chat OFF
+                            <input type="radio" id="chatOff" name="chatFlag" value="false">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="row" style="display: none;">
+                        <div class="label">
+                            <p>Bingo card</p>
+                        </div>
+                        <label class="container">Cố định
+                            <input type="radio" id="default" name="bingoCard" value="default">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="container">Random
+                            <input type="radio" id="random" name="bingoCard" value="random" checked>
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="row">
+                        <div class="label">
+                            <p>Giới hạn số cho Double/Triple</p>
+                        </div>    
+                        <div class="inputBox">
+                            <input class="specialNumber" name="specialNumber" type="number" id="specialNumber" keyup min="20" max="100" value="30" onkeyup="validateSpecialNumber(this.id)" required>
+                            <p class="errorInput errSpecialNumber" id="errSpecialNumber"></p>
+                        </div>                    
+                    </div>
+                    <div class="row">
+                        <div class="label">
+                            <p>Thông báo</p>
+                        </div>
+                        <textarea id="notification" class="textNotification" cols="60" rows="7" 
+                            placeholder="Nhập thông báo" onkeypress="enterNotification(event)"></textarea>
+                    </div>
+                    </form>
+                </div>
+                <div class="groupButton">
+                    <button class="reloadDataBtn" type="submit" onclick="reloadData()">Reload Data</button>
+                    <button class="resetBtn" type="submit" onclick="restartServer()">Reset Server</button>
+                    <button class="sendNotificationBtn" type="submit" onclick="notification()">Gửi thông báo</button>
+                    <button class="pauseBtn" onclick="pauseBingo()" id="pauseBingo">Pause</button>
+                    <button class="playBtn hidden" onclick="playBingo()" id="playBingo">Play</button>
+                    <button class="soundBtn" id="soundBtn" onclick="soundRings()">Play Sound</button>
+                </div>
+            </div>
+
+            <!-- lịch sử chiến thắng -->
+            <div class="winnerHistory">
+                <!-- <div class="content"> -->
+                    <div class="container-winner">
+                        <h2>Danh sách chiến thắng</h2>
+                        <div class="action">
+                            <button class="clearBtn" type="submit" onclick="clearTest()">Clear</button>
+                        </div>
+                    </div>
+                    <div class="winnerList" id="winnerList">
+                    </div>
+
+                    <h2 class="pb-1">Danh sách Số Bingo - Real Time</h2>
+                    <div class="BingoNumberList" style="max-width: 530px; word-wrap: break-word;" id="bingoNumberList">
+                    </div>
+            </div>
+        </div>
+    </div>
+    <!-- loader -->
+    <div class="modal-custom" id="modal-loading">
+        <div class="modal-content-loader">
+
+            <div class="loader">
+                <span style="--i:1"></span>
+                <span style="--i:2"></span>
+                <span style="--i:3"></span>
+                <span style="--i:4"></span>
+                <span style="--i:5"></span>
+                <span style="--i:6"></span>
+                <span style="--i:7"></span>
+                <span style="--i:8"></span>
+                <span style="--i:9"></span>
+                <span style="--i:10"></span>
+                <span style="--i:11"></span>
+                <span style="--i:12"></span>
+                <span style="--i:13"></span>
+                <span style="--i:14"></span>
+                <span style="--i:15"></span>
+                <span style="--i:16"></span>
+                <span style="--i:17"></span>
+                <span style="--i:18"></span>
+                <span style="--i:19"></span>
+                <span style="--i:20"></span>
+            </div>
+        </div>
+    </div>
+    <!-- end loader -->
+    <script src="./socket.io/socket.io.js"></script>
+    <script src="client-admin.js"></script>
+</body>
+</html>

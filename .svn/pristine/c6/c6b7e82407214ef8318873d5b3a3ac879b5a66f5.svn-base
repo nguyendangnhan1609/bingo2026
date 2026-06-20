@@ -1,0 +1,321 @@
+.navbar {
+  overflow: hidden;
+  background-color: white;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  border: 0;
+  padding: 0;
+  margin: 10 0 10 0;
+}
+
+.navbar a,
+.modal-content a {
+  float: right;
+  display: block;
+  color: white;
+  border: 2px solid #7bbe35;
+  background-color: #7bbe35;
+  text-align: center;
+  padding: 5px 20px;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 16px;
+  white-space: nowrap;
+  margin: 5px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.navbar a:hover,
+.modal-content a:hover {
+  background: white;
+  color: #7bbe35;
+}
+
+main {
+  max-height: 300px;
+  transition: all 0.5s;
+  -webkit-text-stroke: 4px #d6f4f4;
+  font-variation-settings: "wght" 900, "ital" 1;
+  font-size: 12vw;
+  text-align: center;
+  color: transparent;
+  font-family: "Meta", sans-serif;
+  text-shadow: 10px 10px 0px #07bccc,
+    15px 15px 0px #e601c0,
+    20px 20px 0px #e9019a,
+    25px 25px 0px #f40468,
+    45px 45px 10px #482896;
+}
+
+main:hover {
+  -webkit-text-stroke: 4px #d6f4f4;
+  font-variation-settings: "wght" 350, "ital" 0;
+  text-shadow: unset;
+}
+
+.center {
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+}
+
+.center h1 {
+  color: rgba(255, 0, 0, 0.1);
+  font-size: 6vw;
+  text-transform: uppercase;
+  font-weight: 700;
+  background-size: cover;
+  -webkit-background-clip: text;
+  animation: background-text-animation 15s linear infinite;
+}
+
+.top-text1 {
+  top: 700px;
+}
+
+/* .top-text2 {
+  top: 70%;
+} */
+
+.logo1 {
+  width: 80px;
+}
+
+.containerflex {
+  display: flex;
+  justify-content: center;
+}
+
+.container-vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.move-right {
+  position: relative;
+  -webkit-animation-name: move-right;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 4s;
+  /* Safari 4.0 - 8.0 */
+  animation-name: move-right;
+  animation-duration: 4s;
+  animation-timing-function: ease-out;
+  /* animation-iteration-count: infinite; */
+}
+
+.move-down {
+  position: relative;
+  -webkit-animation-name: move-down;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 6s;
+  /* Safari 4.0 - 8.0 */
+  animation-name: move-down;
+  animation-duration: 6s;
+}
+
+.move-up {
+  position: relative;
+  -webkit-animation-name: move-up;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 6s;
+  /* Safari 4.0 - 8.0 */
+  animation-name: move-up;
+  animation-duration: 6s;
+}
+
+/* Standard syntax */
+@keyframes move-right {
+  0% {
+    left: 1000px;
+  }
+
+  100% {
+    left: 0px;
+  }
+}
+
+/* Standard syntax */
+@keyframes move-down {
+  0% {
+    top: -1000px;
+    opacity: 0;
+  }
+
+  50% {
+    top: -50px;
+    opacity: 80%;
+  }
+
+  100% {
+    top: 0px;
+    opacity: 100%;
+  }
+}
+
+/* Standard syntax */
+@keyframes move-up {
+  0% {
+    top: 1000px;
+    opacity: 0;
+  }
+
+  50% {
+    top: 50px;
+    opacity: 80%;
+  }
+
+  100% {
+    top: 0px;
+    opacity: 100%;
+  }
+}
+
+@keyframes background-text-animation {
+  0% {
+    background-position: left 0px top 50%;
+  }
+
+  50% {
+    background-position: left 1500px top 50%;
+  }
+
+  100% {
+    background-position: left 0px top 50%;
+  }
+}
+
+/* Use a media query to add a break point at 800px: */
+@media screen and (max-width: 800px) {
+  .top-text1 {
+    top: 35%;
+  }
+}
+
+/*For SLOGAN*/
+.slogan-container {
+  display: inline-block;
+  text-align: center;
+  align-content: center;
+  align-items: center;
+}
+
+.slogan {
+  color: #7bbe35;
+  font-size: 1.5em;
+  font-style: italic;
+}
+
+.brave {
+  position: relative;
+  -webkit-animation-name: move-brave;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 4s;
+  /* Safari 4.0 - 8.0 */
+  animation-name: move-brave;
+  animation-duration: 4s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes move-brave {
+  0% {
+    opacity: 0%;
+  }
+
+  50% {
+    opacity: 5%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
+}
+
+.beyond {
+  position: relative;
+  -webkit-animation-name: move-beyond;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 4s;
+  /* Safari 4.0 - 8.0 */
+  animation-name: move-beyond;
+  animation-duration: 4s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes move-beyond {
+  0% {
+    opacity: 0%;
+  }
+
+  40% {
+    opacity: 10%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
+}
+
+.cls-borders {
+  position: relative;
+  -webkit-animation-name: move-cls-borders;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 4s;
+  /* Safari 4.0 - 8.0 */
+  animation-name: move-cls-borders;
+  animation-duration: 4s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes move-cls-borders {
+  0% {
+    opacity: 0%;
+  }
+
+  30% {
+    opacity: 15%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  appearance: none;
+}
+
+button.spin {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: #7bbe35;
+  color: white;
+  text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+  text-align: center;
+  transition: all .5s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+button.spin:hover:not(:disabled) {
+  opacity: 0.8;
+  box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
+  transition-duration: .1s;
+}

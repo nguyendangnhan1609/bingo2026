@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Bingo Game</title>
+	<base href="./">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	<link href="assets/font/icon.css" rel="stylesheet">
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/html2canvas.js"></script>
+	<script>
+		// Scrolling Effect
+		$(window).on("scroll", function () {
+			if ($(window).scrollTop()) {
+				$('.navbar').addClass('scroll-nav');
+			}
+			else {
+				$('.navbar').removeClass('scroll-nav');
+			}
+		})
+	</script>
+</head>
+
+<body>
+	<app-root></app-root>
+</body>
+
+</html>

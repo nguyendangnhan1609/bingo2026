@@ -1,0 +1,33 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  :focus {
+    outline: #e65c00 auto 5px;
+  }
+  
+  input {
+    border: 0 none;
+  }
+  
+  .search-container {
+    position: relative;
+  }
+
+  .search-container .suggestions {
+    width: 100%;
+    background: #fff;
+    text-align: left;
+  }
+  .search-container .suggestions {
+    position: absolute;
+    top: 60px;
+  }  
+ 
+  ul.has-suggestions {
+    display: block;
+  }  
+
+  .highlight {
+    background-color: #e65c00!important;
+  }

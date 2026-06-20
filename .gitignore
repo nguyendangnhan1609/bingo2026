@@ -1,0 +1,5 @@
+# Thư mục dependencies
+node_modules/
+
+# File backup
+*_BK

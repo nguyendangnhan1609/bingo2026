@@ -1,0 +1,26 @@
+{
+    "name": "Test_Node_realtime",
+    "version": "0.1.0",
+    "description": "test sử dụng Node để làm ứng dụng realtime",
+    "author": "mybrothervnn",
+    "repository": {
+        "type": "",
+        "url": ""
+    },
+    "scripts": {
+        "start": "node server.js",
+        "server": "nodemon server.js"
+    },
+    "dependencies": {
+        "body-parser": "^1.20.2",
+        "ent": "~2.2.0",
+        "express": "~4.13.4",
+        "jsonwebtoken": "^9.0.0",
+        "ldapjs": "^3.0.2",
+        "socket.io": "~1.4.5"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "nodemon": "^3.0.2"
+    }
+}

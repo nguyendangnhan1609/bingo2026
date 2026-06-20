@@ -1,0 +1,57 @@
+<div id="modal-title" class="modal-custom">
+  <div class="modal-content" style="align-items: flex-start;">
+    <p class="close-container">
+      <i (click)="closeModalTitle()" class="material-icons btn-close">close</i>
+    </p>
+    <label class="px-0">Tiêu đề:</label>
+    <input class="form-control" [formControl]="formTitle" placeholder="Vui lòng nhập Title...">
+    <button class="btn spin form-control mt-3" (click)="confirmModalTitle()">Xác nhận</button>
+  </div>
+</div>
+<header>
+  <!-- <i class="material-icons" (click)="openModalTitle()"
+    style="position: absolute; top: 70%; right: 0; cursor: pointer;">more_horiz</i> -->
+  <div id="topbar">
+    <div class=" navbar">
+      <div class="containerflex">
+        <div>
+          <img src="../../assets/images/logobrc1.png" class="logo1 move-right" alt="...">
+        </div>
+        <div class="container-vertical">
+          <img class="item-center" src="../../assets/images/logobrc2.png" class="logo1 move-down" alt="...">
+          <img class="item-center" src="../../assets/images/logobrc3.png" class="logo1 move-up" alt="...">
+        </div>
+      </div>
+      <div class="slogan-container">
+        <h5><span class="brave slogan">Brave </span> <span class="beyond slogan">Beyond </span> <span
+            class="cls-borders slogan">Borders </span></h5>
+      </div>
+      <div class="menu-items">
+        <a routerLink="/materGame" (click)="scroll()">Quay số</a>
+        <a routerLink="/clientGame" (click)="scroll()">Bắt đầu</a>
+        <a (click)="manual()">Hướng dẫn</a>
+      </div>
+    </div>
+    <div class="row center top-text1">
+      <main>BINGO</main>
+    </div>
+    <!-- <div class="row center top-text2">
+      <h1>{{textTilte}}</h1>
+    </div> -->
+  </div>
+</header>
+<div class="content color-gradient">
+  <router-outlet></router-outlet>
+</div>
+<footer id="footer">
+  <div class="footer-img">
+    <img src="../assets/images/logobrc.png" class="" alt="..." style="width: 170px; height: 50px;">
+  </div>
+  <div class="mt-auto">
+    <span>
+      ©2023 BRYCEN VietNam Co., Ltd.<br>
+      PippiWeb Team
+    </span>
+  </div>
+  <!-- <p id="back_top"><a href="#TOP" title=""><i class="material-icons">keyboard_double_arrow_up</i></a></p> -->
+</footer>

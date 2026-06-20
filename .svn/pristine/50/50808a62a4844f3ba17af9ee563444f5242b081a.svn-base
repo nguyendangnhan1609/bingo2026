@@ -1,0 +1,109 @@
+<div id="modal-client" class="modal-custom" (click)="closeModal()">
+	<div class="modal-content">
+		<h1>XIN CHÚC MỪNG!</h1>
+		<img class="modal-img" src="../../assets/images/bingo-gif8.gif" alt="cookies-img" />
+	</div>
+</div>
+<div class="row bingo-main">
+	<div class="col-lg-3 col-md-12 col-sm-12 my-3">
+		<div class="card">
+			<div class="card-body">
+				<!-- <div class="col-lg-12 col-md-12 col-sm-12">
+					<label class="px-0">Mã nhân viên</label>
+					<select class="form-control staffId-slt" [formControl]="staffId" (change)="changedStaffId()">
+						<option value="-1">Chọn mã nhân viên...</option>
+						<ng-container *ngFor="let staff of staffIdList">
+							<option [value]="staff.id">
+								{{ staff.id }}
+							</option>
+						</ng-container>
+					</select>
+				</div> -->
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<label class="px-0">Tìm kiếm</label>
+					<div class="input-group">
+						<input type="text" (keydown.enter)="$event.preventDefault()" placeholder="Nhập tên người chơi..."
+						class="form-control form-search" aria-label="Number" matInput [formControl]="myControl"
+						[matAutocomplete]="auto">
+					<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFirmwares">
+						<mat-option *ngFor="let option of filteredOptions | async" [value]="option"
+							(onSelectionChange)="getIdFromFirmware($event, option)">
+							{{option.name}}
+						</mat-option>
+					</mat-autocomplete>
+						<div class="input-group-prepend">
+							<span class="input-group-text pointer btn-clear" (click)="clearSearch()">
+								<i class="material-icons">backspace</i>
+							</span>
+						</div>
+					</div>
+					
+				</div>
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<label class="px-0">Tên người chơi</label>
+					<select class="form-control staffName-slt" [formControl]="staffName" (change)="changedStaffName()">
+						<option value="-1">Chọn tên người chơi...</option>
+						<ng-container *ngFor="let staff of staffNameList">
+							<option [value]="staff.id">
+								{{ staff.name }}
+							</option>
+						</ng-container>
+					</select>
+				</div>
+				<div class="col-lg-12 error" *ngIf="txtError">{{ txtError }}</div>
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<label class="px-0">Tải ảnh</label>
+					<div class="download-group">
+						<div style="display: flex;">
+							<button (click)="downloadImage()" class="btn spin form-control m-1">
+								1
+							</button>
+							<button (click)="downloadImageMulti()" class="btn spin form-control m-1">
+								20+
+							</button>
+						</div>
+					</div>
+				</div>
+				<button (click)="btnClear()" class="btn spin form-control mt-3">Làm Mới</button>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="boardArrayDisplay.length > 0" class="col-lg-5 col-md-12 col-sm-12" #screen>
+		<div class="col-12 my-3 table-container">
+			<table class="table">
+				<!-- <span class="bg-text-staffid">{{ staffId.value }}</span> -->
+				<tr>
+					<th class="b-color" id="B">B</th>
+					<th class="i-color" id="I">I</th>
+					<th class="n-color" id="N">N</th>
+					<th class="g-color" id="G">G</th>
+					<th class="o-color" id="O">O</th>
+				</tr>
+				<tr *ngFor="let row of boardArrayDisplay; let x = index">
+					<td *ngFor="let column of boardArrayDisplay[x]; let y = index"
+						(click)="selected(x, y, boardArrayDisplay[y][x])"
+						[class.field-disabled]="boardArrayDisplay[x][y] === boardArrayDisplay[2][2]">
+						<div class="td-content" id="{{x + '-' + y + '-' + boardArrayDisplay[y][x] }}">
+							<ng-container
+								*ngIf="boardArrayDisplay[x][y] === boardArrayDisplay[2][2]; then free; else number">
+							</ng-container>
+							<ng-template #number>
+								{{ boardArrayDisplay[y][x] < 10 ? '0' + boardArrayDisplay[y][x] :
+									boardArrayDisplay[y][x]}} </ng-template>
+									<ng-template #free>
+										<img alt="Brycen Logo" class="img-fluid"
+											src="data:image/png;base64,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">
+									</ng-template>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<!-- <span class="txt-table-id">{{ staffId.value }}</span> -->
+			<span class="txt-table-name">{{ txtstaffName }}</span>
+		</div>
+	</div>
+	<div id="download" style="display: none;">
+		<img #canvas>
+		<a #downloadLink></a>
+	</div>
+</div>

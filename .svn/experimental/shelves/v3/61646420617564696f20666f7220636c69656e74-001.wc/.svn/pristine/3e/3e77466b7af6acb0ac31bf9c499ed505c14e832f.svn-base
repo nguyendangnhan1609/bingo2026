@@ -1,0 +1,15 @@
+option batch continue
+option timeout 600
+
+# Connect to SFTP server using a password
+open sftp://itadmin:BRC2020@192.168.249.38/ -hostkey="ssh-ed25519 255 Fs20JROMPVr1L9jRukWUhG8qd2a2qO3GybsBTOAXlbA"
+
+# CD
+call cd /var/www/docker-site/bingo_v3.0
+
+# Rebuild and run Bingo Docker
+call echo BRC2020| sudo -S docker-compose down
+call echo BRC2020| sudo -S docker-compose up --build -d
+
+# Exit WinSCP
+exit

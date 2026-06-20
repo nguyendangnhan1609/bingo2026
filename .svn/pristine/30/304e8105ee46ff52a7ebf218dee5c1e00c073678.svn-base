@@ -1,0 +1,257 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('assets/font/Roboto-font.css');
+@import url('assets/font/RobotoMono-font.css');
+
+@font-face {
+  src: url("assets/font/MetaVariableDemo-Set.woff2") format("woff2");
+  font-family: "Meta";
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  src: url('assets/font/Mitr-Regular.ttf') format('truetype');
+  font-family: "Mitr-Regular";
+  font-style: normal;
+  font-weight: normal;
+}
+
+* {
+  font-family: "Mitr-Regular", cursive;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+#topbar {
+  width: 100%;
+  height: 1000px;
+  background: url(assets/images/BG_YearEndParty_2022.png) no-repeat 50% 50%;
+  background-position: center 25px;
+  background-size: cover;
+}
+
+.content {
+  width: 100%;
+  margin: 0 auto;
+  font-size: 20px;
+  line-height: 30px;
+  min-height: 100vh;
+  padding-top: 15px;
+}
+
+.scroll-nav {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.field-disabled {
+  cursor: default !important;
+  pointer-events: none;
+}
+
+.bg-brycen {
+  background-color: #7bbe35;
+}
+
+.card {
+  border-radius: 20px;
+  color: black;
+  font-weight: 700;
+  box-shadow: 5px 5px 30px 7px rgba(0, 0, 0, 0.25), -5px -5px 30px 7px rgba(0, 0, 0, 0.22);
+  transition: 0.4s;
+  background-color: #feef86;
+  height: 100%;
+  letter-spacing: -1px;
+}
+
+/* .card:hover {
+  transform: scale(0.9, 0.9);
+  box-shadow: 5px 5px 30px 15px rgba(0, 0, 0, 0.25),
+    -5px -5px 30px 15px rgba(0, 0, 0, 0.22);
+} */
+
+.card .card_image {
+  width: auto;
+  height: auto;
+  border-radius: 20px 20px 0 0;
+}
+
+.card .card_image img {
+  width: inherit;
+  height: inherit;
+  border-radius: 20px 20px 0 0;
+  object-fit: cover;
+}
+
+.img-border {
+  border-radius: 20px 20px 0 0;
+}
+
+.color-gradient {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  -webkit-animation: gradient 15s ease infinite;
+  animation: gradient 15s ease infinite;
+}
+
+.modal-custom {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.1);
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+  z-index: 9999;
+
+}
+
+.modal-img {
+  width: 200px;
+  z-index: 999;
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  background-color: #feef86;
+  width: 50vh;
+  border-radius: 20px;
+  text-align: center;
+  align-items: center;
+  padding: 10px 10px 20px 20px;
+  box-shadow: 5px 5px 30px 7px rgba(0, 0, 0, 0.25), -5px -5px 30px 7px rgba(0, 0, 0, 0.22);
+}
+
+.modal-qr {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  background-color: #feef86;
+  width: 95vh;
+  border-radius: 20px;
+  text-align: center;
+  align-items: center;
+  box-shadow: 5px 5px 30px 7px rgba(0, 0, 0, 0.25), -5px -5px 30px 7px rgba(0, 0, 0, 0.22);
+}
+
+.show-modal {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: scale(1.0) !important;
+  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s !important;
+}
+
+#footer {
+  display: flex;
+  justify-content: center;
+  color: black;
+  background-color: white;
+  padding: 5px 0;
+}
+
+.footer-img {
+  padding: 5px;
+  border-radius: 8px;
+  margin: 0 5px;
+}
+
+#back_top {
+  display: block;
+  position: fixed;
+  bottom: -7px;
+  right: 25px;
+  z-index: 9999;
+  text-align: center;
+}
+
+#back_top a {
+  display: block;
+  font-size: 2.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #7bbe35;
+  border: 2px solid #7bbe35;
+  line-height: 55px;
+  border-radius: 55px;
+  height: 55px;
+  width: 55px;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#back_top a:hover {
+  background-color: #7bbe35;
+  color: white;
+}
+
+p i {
+  cursor: pointer;
+  color: black
+}
+
+.close-container {
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+}
+
+.btn-close {
+  background-color: lightgray;
+  padding: 2px;
+  border-radius: 7px;
+}
+
+@-webkit-keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #topbar {
+    background: url(assets/images/E-_Year-End-Party_2022_mobile.png);
+    background-size: contain;
+  }
+
+  .history {
+    font-size: 20px;
+  }
+
+  .p-count {
+    font-size: 20px;
+  }
+
+  .menu-items {
+    display: inline-block;
+  }
+
+  .modal-content,
+  .modal-qr {
+    width: 95vw;
+  }
+}

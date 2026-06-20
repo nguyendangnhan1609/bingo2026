@@ -1,0 +1,14 @@
+version: '3'
+services: 
+  #container container-brc-bingo-daily
+  brc-bingo-daily: 
+    container_name: c-bingo-daily
+    command: npm start
+    build:
+      dockerfile: Dockerfile
+      context: .
+    #liên kết thư mục dữ liệu
+    volumes:
+      - ./public/data:/app/data
+    ports: 
+      - "7777:7777"

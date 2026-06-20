@@ -1,0 +1,524 @@
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+declare let html2canvas: any;
+
+export interface staffDto {
+  staffid?: string;
+  id: string;
+  name: string;
+}
+@Component({
+  selector: 'app-client-game',
+  templateUrl: './client-game.component.html',
+  styleUrls: ['./client-game.component.css']
+})
+export class ClientGameComponent implements OnInit, OnChanges {
+
+  public staffId: FormControl = new FormControl(-1);
+  public staffName: FormControl = new FormControl(-1);
+  //public staffIdList: staffDto[] = [];
+  public staffNameList: staffDto[] = [];
+  public txtstaffName: string = "";
+  public boardArrayDisplay: Array<any> = [];
+  public boardArray: Array<any> = [];
+  public b: Array<number> = [];
+  public i: Array<number> = [];
+  public n: Array<number> = [];
+  public g: Array<number> = [];
+  public o: Array<number> = [];
+  public list: Array<any> = [];
+  // Declaring GLOBAL vars for X and Y and Z
+  public X1: number = 0;
+  public X2: number = 0;
+  public X3: number = 0;
+  public X4: number = 0;
+  public X5: number = 0;
+  public Y1: number = 0;
+  public Y2: number = 0;
+  public Y3: number = 0;
+  public Y4: number = 0;
+  public Y5: number = 0;
+  public Z1: number = 0;
+  public Z2: number = 0;
+  // public countBingo: number = 0;
+  public audio = new Audio();
+  public isDown: boolean = false;
+  public txtError: string = "";
+  private count: number = 0;
+  private idElmList: Array<any> = [];
+  myControl = new FormControl('');
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<string[]>;
+  @ViewChild('screen', { static: false }) screen: ElementRef;
+  @ViewChild('canvas', { static: false }) canvas: ElementRef;
+  @ViewChild('downloadLink', { static: false }) downloadLink: ElementRef;
+
+  constructor(private http: HttpClient) {
+    this.getJSON("data.json").subscribe(data => {
+      //this.staffIdList = data;
+      this.staffNameList = data;
+    });
+
+    this.getJSON("data-client.json").subscribe(data => {
+      this.boardArray = data;
+    });
+  }
+
+  ngOnInit() {
+    //this.generate(); get random data-client init
+    this.idElmList = [];
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this.filter(value || '')),
+    );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+  }
+
+  public getJSON(filename): Observable<any> {
+    return this.http.get("./assets/data/" + filename);
+  }
+
+  generate() {
+    this.clearProgess();
+    this.boardArray = [];
+    setTimeout(() => {
+      this.staffNameList.forEach(el => {
+        let arr = this.loadingData();
+        this.boardArray.push({ ...arr, staffid: el.id });
+      })
+    }, 1000
+    );
+  }
+
+  loadingData() {
+    let boardArrayDisplay = [];
+    this.b = [];
+    this.i = [];
+    this.n = [];
+    this.g = [];
+    this.o = [];
+
+    let b1 = 0;
+    let i1 = 0;
+    let n1 = 0;
+    let g1 = 0;
+    let o1 = 0;
+    const nu = [];
+
+    while (nu.length < 25) {
+      const n = Math.floor(Math.random() * 75) + 1;
+      const validate = nu.filter(x => {
+        return n === x;
+      });
+      if (validate.length === 1) {
+        continue;
+      }
+      if (n <= 15) {
+        if (b1 === 5) {
+          continue;
+        }
+        b1++;
+      } else if (n > 15 && n <= 30) {
+        if (i1 === 5) {
+          continue;
+        }
+        i1++;
+      } else if (n > 30 && n <= 45) {
+        if (n1 === 5) {
+          continue;
+        }
+        n1++;
+      } else if (n > 45 && n <= 60) {
+        if (g1 === 5) {
+          continue;
+        }
+        g1++;
+      } else if (n > 60 && n <= 75) {
+        if (o1 === 5) {
+          continue;
+        }
+        o1++;
+      }
+      nu.push(n);
+    }
+
+    nu.map(x => {
+      if (x <= 15) {
+        this.b.push(x);
+      } else if (x > 15 && x <= 30) {
+        this.i.push(x);
+      } else if (x > 30 && x <= 45) {
+        this.n.push(x);
+      } else if (x > 45 && x <= 60) {
+        this.g.push(x);
+      } else if (x > 60 && x <= 75) {
+        this.o.push(x);
+      }
+    });
+    boardArrayDisplay.push(this.b);
+    boardArrayDisplay.push(this.i);
+    boardArrayDisplay.push(this.n);
+    boardArrayDisplay.push(this.g);
+    boardArrayDisplay.push(this.o);
+
+    return boardArrayDisplay;
+  }
+
+  filter(val: any): any[] {
+    return this.staffNameList.filter(firmware => {
+      let name = val.name ? val.name : val;
+      return firmware.name.toLowerCase().indexOf(name.toLowerCase()) > -1;
+    });
+  }
+
+  displayFirmwares(firmware: any): string {
+    return firmware ? firmware.name : firmware;
+  }
+
+  getIdFromFirmware(event, option) {
+    if (event.isUserInput) {
+      this.staffName.setValue(option.id);
+      this.txtError = "";
+      this.idElmList = [];
+      this.boardArrayDisplay = [];
+      this.clearProgess();
+      const row = this.boardArray.filter(el => el.staffid == option.id).map(({ staffid, ...rest }) => ({ ...rest }));
+      Object.entries(row[0]).map(el => {
+        this.boardArrayDisplay.push(el[1])
+      })
+      this.staffNameList.forEach(e => {
+        if (option.id == e.id) { this.txtstaffName = e.name };
+      })
+      this.isDown = true;
+    }
+  }
+
+  clearSearch() {
+    this.myControl.setValue('');
+  }
+
+  changedStaffId() {
+    if (this.staffId.value == -1) {
+      this.staffName.setValue(-1);
+      this.idElmList = [];
+      this.boardArrayDisplay = [];
+      return;
+    }
+    this.staffName.setValue(this.staffId.value);
+    this.txtError = "";
+    this.idElmList = [];
+    this.boardArrayDisplay = [];
+    this.clearProgess();
+    const row = this.boardArray.filter(el => el.staffid == this.staffId.value).map(({ staffid, ...rest }) => ({ ...rest }));
+    Object.entries(row[0]).map(el => {
+      this.boardArrayDisplay.push(el[1])
+    })
+    this.staffNameList.forEach(e => {
+      if (this.staffId.value == e.id) { this.txtstaffName = e.name };
+    })
+    this.isDown = true;
+  }
+
+  changedStaffName() {
+    if (this.staffName.value == -1) {
+      this.staffId.setValue(-1);
+      this.idElmList = [];
+      this.boardArrayDisplay = [];
+      return;
+    }
+    this.myControl.setValue('');
+    this.txtError = "";
+    this.idElmList = [];
+    this.boardArrayDisplay = [];
+    this.clearProgess();
+    const row = this.boardArray.filter(el => el.staffid == this.staffName.value).map(({ staffid, ...rest }) => ({ ...rest }));
+    Object.entries(row[0]).map(el => {
+      this.boardArrayDisplay.push(el[1])
+    })
+    this.staffNameList.forEach(e => {
+      if (this.staffName.value == e.id) { this.txtstaffName = e.name };
+    })
+    this.isDown = true;
+  }
+  isNumber(value: string | number): boolean {
+    return ((value != null) &&
+      (value !== '') &&
+      !isNaN(Number(value.toString())));
+  }
+
+  hasWhiteSpace(s) {
+    return s.indexOf('❌') >= 0;
+  }
+
+  selected(x, y, number) {
+    // Changing the button onClick "❌"
+    let numberFm = number < 10 ? '0' + number : number;
+    let id = x + '-' + y + '-' + number;
+    const index = this.idElmList.indexOf(id);
+    if (index < 0) {
+      this.idElmList.push(id);
+    }
+    const button = document.getElementById(id);
+    if (!this.hasWhiteSpace(button.innerHTML)) {
+      button.innerHTML = numberFm + '<span style="display: none;">❌</span>';
+      button.style.borderRadius = "90px";
+      button.style.backgroundColor = "#7bbe35";
+      button.style.color = "white";
+      button.style.opacity = "1";
+    } else {
+      button.innerHTML = numberFm;
+      button.style.borderRadius = "";
+      button.style.backgroundColor = "";
+      button.style.color = "black";
+      button.style.opacity = "0.4";
+    };
+    const el = document.querySelector('#modal-client');
+    const cl = el.classList;
+
+    // Handling X1
+    if (button.id === `0-0-${number}` || button.id === `0-1-${number}` || button.id === `0-2-${number}` || button.id === `0-3-${number}` || button.id === `0-4-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.X1--;
+      } else {
+        this.X1++;
+      }
+      if (this.X1 == 5) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // Handling X2
+    if (button.id === `1-0-${number}` || button.id === `1-1-${number}` || button.id === `1-2-${number}` || button.id === `1-3-${number}` || button.id === `1-4-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.X2--;
+      } else {
+        this.X2++;
+      }
+      if (this.X2 == 5) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // Handling X3
+    if (button.id === `2-0-${number}` || button.id === `2-1-${number}` || button.id === `2-2-${number}` || button.id === `2-3-${number}` || button.id === `2-4-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.X3--;
+      } else {
+        this.X3++;
+      }
+      if (this.X3 == 4) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // Handling X4
+    if (button.id === `3-0-${number}` || button.id === `3-1-${number}` || button.id === `3-2-${number}` || button.id === `3-3-${number}` || button.id === `3-4-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.X4--;
+      } else {
+        this.X4++;
+      }
+      if (this.X4 == 5) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // Handling X5
+    if (button.id === `4-0-${number}` || button.id === `4-1-${number}` || button.id === `4-2-${number}` || button.id === `4-3-${number}` || button.id === `4-4-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.X5--;
+      } else {
+        this.X5++;
+      }
+      if (this.X5 == 5) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // Handling Y1
+    if (button.id === `0-0-${number}` || button.id === `1-0-${number}` || button.id === `2-0-${number}` || button.id === `3-0-${number}` || button.id === `4-0-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.Y1--;
+      } else {
+        this.Y1++;
+      }
+      if (this.Y1 == 5) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // Handling Y2
+    if (button.id === `0-1-${number}` || button.id === `1-1-${number}` || button.id === `2-1-${number}` || button.id === `3-1-${number}` || button.id === `4-1-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.Y2--;
+      } else {
+        this.Y2++;
+      }
+      if (this.Y2 == 5) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // Handling Y3
+    if (button.id === `0-2-${number}` || button.id === `1-2-${number}` || button.id === `2-2-${number}` || button.id === `3-2-${number}` || button.id === `4-2-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.Y3--;
+      } else {
+        this.Y3++;
+      }
+      if (this.Y3 == 4) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // Handling Y4
+    if (button.id === `0-3-${number}` || button.id === `1-3-${number}` || button.id === `2-3-${number}` || button.id === `3-3-${number}` || button.id === `4-3-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.Y4--;
+      } else {
+        this.Y4++;
+      }
+      if (this.Y4 == 5) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // Handling Y5
+    if (button.id === `0-4-${number}` || button.id === `1-4-${number}` || button.id === `2-4-${number}` || button.id === `3-4-${number}` || button.id === `4-4-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.Y5--;
+      } else {
+        this.Y5++;
+      }
+      if (this.Y5 == 5) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // Handling Z1
+    if (button.id === `0-0-${number}` || button.id === `1-1-${number}` || button.id === `2-2-${number}` || button.id === `3-3-${number}` || button.id === `4-4-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.Z1--;
+      } else {
+        this.Z1++;
+      }
+      if (this.Z1 == 4) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // Handling Z2
+    if (button.id === `4-0-${number}` || button.id === `3-1-${number}` || button.id === `2-2-${number}` || button.id === `1-3-${number}` || button.id === `0-4-${number}`) {
+      if (!this.hasWhiteSpace(button.innerHTML)) {
+        this.Z2--;
+      } else {
+        this.Z2++;
+      }
+      if (this.Z2 == 4) {
+        cl.add('show-modal');
+        this.playAudio("soundVictory");
+      }
+    }
+    // let X1, X2, X3, X4, X5, Y1, Y2, Y3, Y4, Y5, Z1, Z2: number = 0;
+    // X1 = this.X1 === 5 ? 1 : 0;
+    // X2 = this.X2 === 5 ? 1 : 0;
+    // X3 = this.X3 === 4 ? 1 : 0;
+    // X4 = this.X4 === 5 ? 1 : 0;
+    // X5 = this.X5 === 5 ? 1 : 0;
+    // Y1 = this.Y1 === 5 ? 1 : 0;
+    // Y2 = this.Y2 === 5 ? 1 : 0;
+    // Y3 = this.Y3 === 4 ? 1 : 0;
+    // Y4 = this.Y4 === 5 ? 1 : 0;
+    // Y5 = this.Y5 === 5 ? 1 : 0;
+    // Z1 = this.Z1 === 4 ? 1 : 0;
+    // Z2 = this.Z2 === 4 ? 1 : 0;
+    // this.countBingo = X1 + X2 + X3 + X4 + X5 + Y1 + Y2 + Y3 + Y4 + Y5 + Z1 + Z2;
+  }
+
+  clearProgess() {
+    // this.countBingo = 0;
+    this.X1 = 0;
+    this.X2 = 0;
+    this.X3 = 0;
+    this.X4 = 0;
+    this.X5 = 0;
+    this.Y1 = 0;
+    this.Y2 = 0;
+    this.Y3 = 0;
+    this.Y4 = 0;
+    this.Y5 = 0;
+    this.Z1 = 0;
+    this.Z2 = 0;
+  }
+
+  closeModal() {
+    const el = document.querySelector('#modal-client');
+    el.classList.remove('show-modal')
+    this.pauseAudio("soundVictory");
+  }
+
+  playAudio(filename) {
+    this.audio.src = "../../../assets/audio/" + filename + ".mp3";
+    this.audio.volume = 1;
+    this.audio.load();
+    setTimeout(() => { this.audio.play(); }, 150);
+
+  }
+
+  pauseAudio(filename) {
+    this.audio.src = "../../../assets/audio/" + filename + ".mp3";
+    this.audio.volume = 0;
+    this.audio.pause();
+  }
+
+
+  downloadImageMulti() {
+    for (let i = this.count; i < this.count + 20; i++) {
+      if (this.staffNameList[i] == undefined) return;
+      setTimeout(() => {
+        this.staffName.setValue(this.staffNameList[i].id);
+        this.checkDownloadMulti();
+      }, 1500);
+      setTimeout(() => {
+        if (this.isDown) {
+          this.downloadImage(this.staffNameList[i].id);
+        }
+      }, 1500);
+    }
+    this.count += 20;
+  }
+
+  checkDownloadMulti() {
+    this.staffName.valueChanges.subscribe(() => {
+      this.changedStaffName();
+    });
+  }
+
+  downloadImage(name?: string) {
+    if (!name) name = this.staffName.value;
+    html2canvas(this.screen.nativeElement).then(canvas => {
+      this.canvas.nativeElement.src = canvas.toDataURL();
+      this.downloadLink.nativeElement.href = canvas.toDataURL('image/png');
+      this.downloadLink.nativeElement.download = name + '.png';
+      this.downloadLink.nativeElement.click();
+    });
+  }
+
+  btnClear() {
+    this.clearProgess();
+    this.idElmList.forEach(e => {
+      let number = e.length == 5 ? e.slice(-1) : e.slice(-2);
+      let numberFm = number < 10 ? '0' + number : number;
+      document.getElementById(e).innerHTML = numberFm;
+      document.getElementById(e).style.borderRadius = "";
+      document.getElementById(e).style.backgroundColor = "";
+      document.getElementById(e).style.color = "black";
+      document.getElementById(e).style.opacity = "1";
+    })
+  }
+}
