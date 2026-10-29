@@ -1,9 +1,0 @@
-[
-    {"id": "1", "name": "Smile", "src": "./image/emoji/Smile.gif","charact":":D"},
-    {"id": "3", "name": "Grinning", "src": "./image/emoji/Grinning.gif","charact":""},
-    {"id": "5", "name": "Grin-sweat", "src": "./image/emoji/Grin-sweat.gif","charact":""},
-    {"id": "6", "name": "Joy", "src": "./image/emoji/Joy.gif","charact":""},
-    {"id": "11", "name": "Kissing-heart", "src": "./image/emoji/Kissing-heart.gif","charact":":*"},
-    {"id": "12", "name": "Heart-face", "src": "./image/emoji/Heart-face.gif","charact":""},
-    {"id": "13", "name": "Heart-eyes", "src": "./image/emoji/Heart-eyes.gif","charact":""}
-]

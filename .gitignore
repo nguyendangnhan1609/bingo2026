@@ -1,5 +1,10 @@
 # Thư mục dependencies
 node_modules/
+.svn/
+.svn_bk/
+.git_bk/
 
 # File backup
 *_BK
+
+data_private/

@@ -169,17 +169,29 @@ git push origin main
 
 ## Bước 8: Xóa credential cache (nếu cần đổi lại tài khoản)
 
-Nếu Windows Credential Manager lưu tài khoản cũ, xóa thủ công:
+Git Credential Manager (GCM) có thể lưu token cũ và override PAT mới, gây lỗi 403 dù token hợp lệ.
+
+### Kiểm tra credential GCM đang dùng
+
+```bash
+printf 'protocol=https\nhost=github.com\n' | git credential fill
+```
+
+Nếu `password` hiện ra là token cũ (bắt đầu bằng `gho_`) → cần xóa.
+
+### Xóa credential cũ
+
+```bash
+printf 'protocol=https\nhost=github.com\nusername=nguyendangnhan1609\n' | git credential reject
+```
+
+Kiểm tra lại bằng `git credential fill` — lần này phải hiện đúng PAT mới.
+
+### Xóa thủ công qua Windows Credential Manager
 
 ```
 Control Panel → Credential Manager → Windows Credentials
-→ Tìm mục github.com → Xóa
-```
-
-Hoặc dùng lệnh:
-
-```bash
-git credential reject
+→ Tìm mục "git:https://github.com" → Xóa
 ```
 
 ---

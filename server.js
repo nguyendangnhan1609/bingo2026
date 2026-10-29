@@ -1254,5 +1254,20 @@ function loadData() {
   });
 }
 
+// Chức năng bổ sung (Nhận giải + Chat riêng) - module độc lập, lỗi không ảnh hưởng game
+try {
+  require("./extra-features")({
+    io,
+    jwt,
+    secret,
+    maxLength,
+    maxChatListLeng,
+    userList: () => userList,
+    gameCode: () => gameCode,
+  });
+} catch (e) {
+  console.error("[extra-features] load error", e);
+}
+
 server.listen(7777);
 //console.log("Started Server at 7777 ver 2025!");

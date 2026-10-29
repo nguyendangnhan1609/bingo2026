@@ -10,5 +10,6 @@ services:
     #liên kết thư mục dữ liệu
     volumes:
       - ./public/data:/app/data
+      - ./data_private:/app/data_private
     ports: 
       - "7777:7777"

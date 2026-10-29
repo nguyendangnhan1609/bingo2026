@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BINGO Trao đổi</title>
+<link rel="icon" type="image/x-icon" href="./image/favicon.ico">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Arial, sans-serif; background: #f4f4f4; height: 100vh; display: flex; flex-direction: column; }
+  header { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #fff; border-bottom: 1px solid #ddd; }
+  header img { height: 40px; }
+  header h1 { font-size: 20px; margin: 0; flex: 1; }
+  header a { text-decoration: none; color: #0a58ca; white-space: nowrap; }
+  #meName { font-weight: bold; color: #198754; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40vw; }
+  .bar { display: flex; gap: 8px; align-items: center; padding: 8px 14px; background: #fff; border-bottom: 1px solid #ddd; position: relative; }
+  .bar label { white-space: nowrap; font-weight: bold; }
+  .bar input { flex: 1; padding: 7px 10px; border: 1px solid #bbb; border-radius: 6px; min-width: 0; }
+  button { padding: 7px 12px; border: 0; border-radius: 6px; background: #198754; color: #fff; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: default; }
+  #suggest { position: absolute; top: 100%; left: 110px; right: 160px; background: #fff; border: 1px solid #bbb; border-radius: 6px; max-height: 220px; overflow: auto; z-index: 10; display: none; }
+  #suggest div { padding: 6px 10px; cursor: pointer; }
+  #suggest div:hover { background: #eef; }
+  main { flex: 1; display: flex; min-height: 0; }
+  #left { width: 300px; border-right: 1px solid #ddd; background: #fff; overflow-y: auto; }
+  #right { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .sess { padding: 10px 12px; border-bottom: 1px solid #eee; cursor: pointer; }
+  .sess.active { background: #e7f1ff; }
+  .sess .nm { font-weight: bold; display: flex; justify-content: space-between; gap: 6px; }
+  .sess .lt { color: #666; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .badge { background: #dc3545; color: #fff; border-radius: 10px; padding: 0 7px; font-size: 12px; }
+  #title { padding: 8px 14px; font-weight: bold; background: #fff; border-bottom: 1px solid #ddd; display: flex; gap: 10px; align-items: center; }
+  #back { display: none; background: #6c757d; }
+  #msgs { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .m { max-width: 75%; padding: 7px 10px; border-radius: 10px; background: #fff; overflow-wrap: anywhere; align-self: flex-start; }
+  .m.me { align-self: flex-end; background: #d1e7dd; }
+  .m.like { font-size: 34px; line-height: 1.1; padding: 4px 10px; }
+  .m .tm { font-size: 11px; color: #777; margin-top: 2px; }
+  .m img { width: 24px; height: 24px; vertical-align: middle; }
+  #emojis { display: none; padding: 6px 12px; background: #fff; border-top: 1px solid #ddd; gap: 8px; flex-wrap: wrap; }
+  #emojis img { width: 32px; height: 32px; cursor: pointer; }
+  #composer { display: flex; gap: 8px; padding: 8px 12px; background: #fff; border-top: 1px solid #ddd; }
+  #composer input { flex: 1; padding: 8px 10px; border: 1px solid #bbb; border-radius: 6px; min-width: 0; }
+  #emojiBtn { background: #ffc107; color: #000; }
+  #likeBtn { background: #0d6efd; font-size: 18px; padding: 4px 10px; }
+  .empty { color: #888; text-align: center; margin: auto; padding: 20px; }
+  @media (max-width: 767px) {
+    #left { width: 100%; border-right: 0; }
+    #right { display: none; }
+    main.chatting #left { display: none; }
+    main.chatting #right { display: flex; }
+    #back { display: inline-block; }
+    #suggest { left: 14px; right: 14px; }
+    .bar label { display: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <img src="./image/logobrc.png" alt="logo">
+  <h1>BINGO Trao đổi</h1>
+  <span id="meName"></span>
+  <a href="/">← Trang chủ</a>
+</header>
+<div class="bar">
+  <label for="peerInput">Trao đổi với</label>
+  <input id="peerInput" type="text" placeholder="Nhập mã nhân viên hoặc họ tên có dấu" autocomplete="off">
+  <button id="createBtn">Tạo phiên trao đổi</button>
+  <div id="suggest"></div>
+</div>
+<main id="main">
+  <div id="left"></div>
+  <div id="right">
+    <div id="title"><button id="back">←</button><span id="titleText">Chọn một phiên trao đổi</span></div>
+    <div id="msgs"><div class="empty">Chọn hoặc tạo một phiên trao đổi để bắt đầu.</div></div>
+    <div id="emojis"></div>
+    <div id="composer">
+      <button id="emojiBtn" type="button">&#128512;</button>
+      <input id="textInput" type="text" maxlength="250" placeholder="Nhập tin nhắn..." autocomplete="off" disabled>
+      <button id="sendBtn" disabled>Gửi</button>
+      <button id="likeBtn" type="button" title="Gửi like" disabled>&#128077;</button>
+    </div>
+  </div>
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+(function () {
+  var tk = null;
+  try {
+    tk = sessionStorage.getItem("token");
+    if (!tk) {
+      // tab mở từ trang chủ: nhận token qua localStorage rồi xóa ngay
+      tk = localStorage.getItem("pm_token");
+      if (tk) sessionStorage.setItem("token", tk);
+    }
+    localStorage.removeItem("pm_token");
+  } catch (e) {}
+  var socket = io.connect(window.location.origin, { query: { token: tk } });
+  var me = null, users = [], sessions = {}, current = null, history = {}, emojiList = [];
+  var LIKE = "👍";
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  // text -> html an toàn; [[Tên]] và :) :D =) :* thành gif như chat tổng
+  function render(text) {
+    var h = esc(text);
+    function img(name) {
+      var e = emojiList.find(function (x) { return x.name === name; });
+      return e ? '<img src="' + esc(e.src) + '" alt="">' : null;
+    }
+    h = h.replace(/\[\[([\w-]+)\]\]/g, function (m, n) { return img(n) || m; });
+    [[":)", "Smile"], ["=)", "Smile"], [":D", "Smile"], [":d", "Smile"], [":*", "Kissing-heart"]].forEach(function (p) {
+      var i = img(p[1]);
+      if (i) h = h.split(p[0]).join(i);
+    });
+    return h;
+  }
+  function fmt(t) {
+    var d = new Date(t), p = function (n) { return (n < 10 ? "0" : "") + n; };
+    return p(d.getHours()) + ":" + p(d.getMinutes()) + " " + p(d.getDate()) + "/" + p(d.getMonth() + 1);
+  }
+  var $ = function (id) { return document.getElementById(id); };
+
+  if (!tk) {
+    $("msgs").innerHTML = '<div class="empty">Vui lòng đăng nhập ở <a href="/">trang chủ</a> trước.</div>';
+  }
+  fetch("/data/emojiAnimationList.json").then(function (r) { return r.json(); }).then(function (l) {
+    emojiList = l;
+    $("emojis").innerHTML = l.map(function (e) {
+      return '<img src="' + esc(e.src) + '" data-n="' + esc(e.name) + '" alt="">';
+    }).join("");
+    if (current) drawMsgs();
+  }).catch(function () {});
+
+  // ----- socket -----
+  function auth() { if (tk) socket.emit("pm-auth", tk); }
+  socket.on("connect", auth);
+  socket.on("pm-auth-error", function () {
+    $("msgs").innerHTML = '<div class="empty">Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại ở <a href="/">trang chủ</a>.</div>';
+  });
+  socket.on("send-user-list", function (l) { users = l; });
+  socket.on("pm-init", function (d) {
+    me = d.me;
+    $("meName").textContent = me.name;
+    sessions = {};
+    d.sessions.forEach(function (s) { sessions[s.sid] = s; });
+    drawList();
+    if (current && sessions[current]) socket.emit("pm-open", current);
+  });
+  socket.on("pm-session", function (s, select) {
+    sessions[s.sid] = s;
+    drawList();
+    if (select) openSession(s.sid);
+  });
+  socket.on("pm-history", function (d) {
+    history[d.sid] = d.msgs;
+    if (sessions[d.sid]) sessions[d.sid].unread = 0;
+    drawList();
+    if (d.sid === current) drawMsgs();
+  });
+  socket.on("pm-unread", function (d) {
+    if (sessions[d.sid]) { sessions[d.sid].unread = d.unread; drawList(); }
+  });
+  socket.on("pm-message", function (d) {
+    sessions[d.sid] = d.session;
+    var h = history[d.sid] || (history[d.sid] = []);
+    h.push(d.msg);
+    while (h.length > 20) h.shift();
+    if (d.sid === current && d.msg.from !== (me && me.id)) {
+      socket.emit("pm-open", d.sid); // đang xem phiên này: đánh dấu đã đọc
+    }
+    drawList();
+    if (d.sid === current) drawMsgs();
+  });
+  socket.on("pm-error", function (m) { alert(m); });
+
+  // ----- vẽ -----
+  function drawList() {
+    var arr = Object.keys(sessions).map(function (k) { return sessions[k]; })
+      .sort(function (a, b) { return b.t - a.t; });
+    $("left").innerHTML = arr.length ? arr.map(function (s) {
+      return '<div class="sess' + (s.sid === current ? " active" : "") + '" data-sid="' + esc(s.sid) + '">' +
+        '<div class="nm"><span>' + esc(s.peer.name) + '</span>' +
+        (s.unread ? '<span class="badge">' + s.unread + "</span>" : "") + "</div>" +
+        '<div class="lt">' + esc(s.last.replace(/\[\[([\w-]+)\]\]/g, "[$1]")) + "</div></div>";
+    }).join("") : '<div class="empty">Chưa có phiên trao đổi nào.</div>';
+  }
+  function drawMsgs() {
+    var h = history[current] || [];
+    var box = $("msgs");
+    box.innerHTML = h.length ? h.map(function (m) {
+      return '<div class="m' + (me && m.from === me.id ? " me" : "") + (m.text === LIKE ? " like" : "") + '">' + render(m.text) +
+        '<div class="tm">' + fmt(m.t) + "</div></div>";
+    }).join("") : '<div class="empty">Chưa có tin nhắn. Hãy bắt đầu trò chuyện!</div>';
+    box.scrollTop = box.scrollHeight;
+  }
+  function openSession(sid) {
+    current = sid;
+    $("titleText").textContent = "Trao đổi với " + sessions[sid].peer.name;
+    $("textInput").disabled = false;
+    $("sendBtn").disabled = false;
+    $("likeBtn").disabled = false;
+    $("main").classList.add("chatting");
+    socket.emit("pm-open", sid);
+    drawList();
+    $("textInput").focus();
+  }
+
+  $("left").addEventListener("click", function (e) {
+    var el = e.target.closest(".sess");
+    if (el) openSession(el.getAttribute("data-sid"));
+  });
+  $("back").addEventListener("click", function () { $("main").classList.remove("chatting"); });
+
+  // ----- gửi -----
+  function send() {
+    var v = $("textInput").value.trim();
+    if (!v || !current) return;
+    socket.emit("pm-send", { sid: current, text: v });
+    $("textInput").value = "";
+  }
+  $("sendBtn").addEventListener("click", send);
+  $("likeBtn").addEventListener("click", function () {
+    if (current) socket.emit("pm-send", { sid: current, text: LIKE });
+  });
+  $("textInput").addEventListener("keydown", function (e) { if (e.keyCode === 13) { e.preventDefault(); send(); } });
+  $("emojiBtn").addEventListener("click", function () {
+    var b = $("emojis"); b.style.display = b.style.display === "flex" ? "none" : "flex";
+  });
+  $("emojis").addEventListener("click", function (e) {
+    var n = e.target.getAttribute && e.target.getAttribute("data-n");
+    if (!n) return;
+    var i = $("textInput");
+    if (i.disabled) return;
+    i.value += "[[" + n + "]]";
+    i.focus();
+  });
+
+  // ----- tìm người & tạo phiên -----
+  function match(q) {
+    q = q.trim().toLowerCase();
+    if (!q) return [];
+    return users.filter(function (u) {
+      return u.id.toLowerCase().indexOf(q) > -1 || u.name.toLowerCase().indexOf(q) > -1;
+    }).slice(0, 8);
+  }
+  var picked = null;
+  $("peerInput").addEventListener("input", function () {
+    picked = null;
+    var m = match(this.value);
+    var s = $("suggest");
+    s.innerHTML = m.map(function (u) { return '<div data-id="' + esc(u.id) + '" data-nm="' + esc(u.name) + '">' + esc(u.name) + "</div>"; }).join("");
+    s.style.display = m.length ? "block" : "none";
+  });
+  $("suggest").addEventListener("click", function (e) {
+    var id = e.target.getAttribute("data-id");
+    if (!id) return;
+    picked = id;
+    $("peerInput").value = e.target.getAttribute("data-nm");
+    $("suggest").style.display = "none";
+  });
+  $("createBtn").addEventListener("click", function () {
+    var id = picked;
+    if (!id) {
+      var m = match($("peerInput").value);
+      var exact = m.filter(function (u) { return u.id.toLowerCase() === $("peerInput").value.trim().toLowerCase(); });
+      if (exact.length === 1) id = exact[0].id;
+      else if (m.length === 1) id = m[0].id;
+    }
+    if (!id) return alert("Vui lòng chọn một nhân viên trong danh sách gợi ý.");
+    socket.emit("pm-create", id);
+    $("peerInput").value = ""; picked = null; $("suggest").style.display = "none";
+  });
+})();
+</script>
+</body>
+</html>

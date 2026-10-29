@@ -4976,5 +4976,18 @@
     "name": "Phạm Thị Phương Thảo - BRYCENVN10078",
     "user": "Phạm Thị Phương Thảo",
     "pass": "123456789"
+  },  
+   {
+    "id": "BRYCENVN10074",
+    "name": "Hoàng Trọng Linh - BRYCENVN10074",
+    "user": "Hoàng Trọng Linh",
+    "pass": "123456"
+  } ,  
+   {
+    "id": "BRYCENVN2806",
+    "name": "Ngô Thị Quý - BRYCENVN2806",
+    "user": "Ngô Thị Quý",
+    "pass": "123456"
   } 
+
 ]

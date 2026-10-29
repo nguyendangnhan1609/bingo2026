@@ -79,6 +79,20 @@
 			<h4>❌Số bạn chọn chưa có!</h4>
 		</div>
 	</div>
+	<div id="modal-prize" class="modal-custom">
+		<div class="modal-content" style="background:#fff; min-width:320px; max-width:92vw;">
+			<h4 class="mb-2">Nhận giải</h4>
+			<p class="mb-2" style="font-weight:normal; text-align:left; max-width:340px;">Nếu bạn đã trúng giải thì vui lòng điền STK và tên ngân hàng để gửi cho BTC nhé ! Yêu cầu tên của số tài khoản phải trùng tên của người đã trúng giải thì mới hợp lệ. Sau khi BTC kiểm tra thì sẽ thực hiện chuyển khoản giải thưởng cho bạn nhé !</p>
+			<div id="prize-rank" class="mb-2" style="color:#c00;"></div>
+			<input id="prize-stk" class="form-control mb-2" type="text" inputmode="numeric" maxlength="20" placeholder="Số tài khoản (STK)" autocomplete="off">
+			<input id="prize-bank" class="form-control mb-2" type="text" maxlength="50" placeholder="Tên ngân hàng" autocomplete="off">
+			<div id="prize-msg" class="mb-2"></div>
+			<div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:8px;">
+				<button class="btn btn-success" id="prize-send">Gửi thông tin để nhận giải</button>
+				<button class="btn btn-secondary" id="prize-close">Đóng</button>
+			</div>
+		</div>
+	</div>
 	<div id="modal-error-chat" class="modal-custom" onclick="closeModalErrorChat()">
 		<div class="modal-content">
 			<h4>❌Đăng nhập để sử dụng chat.</h4>
@@ -146,6 +160,11 @@
 					</div>
 					<div class="col-12 login-notification">
 						<div id="login-notification"></div>
+					</div>
+					<!-- Nhận giải + Chat riêng (extra.js) -->
+					<div class="col-12 my-2" style="display:flex; gap:8px; justify-content:end;">
+						<button class="btn btn-warning" id="btnPrize" disabled>Nhận giải</button>
+						<button class="btn btn-info" id="btnPmChat" disabled>Chat</button>
 					</div>
 				</div>
 			</div>
@@ -401,6 +420,7 @@
 	<!-- Script -->
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="client.js"></script>
+	<script src="extra.js"></script>
 	<script src="js/dropdown.js"></script>
 	<script src="js/flipdown.js"></script>
 	<script src='js/disable-devtool.js'></script>
