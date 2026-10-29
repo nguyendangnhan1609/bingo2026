@@ -80,6 +80,17 @@
 			<h4>❌Số bạn chọn chưa có!</h4>
 		</div>
 	</div>
+	<div id="modal-donate" class="modal-custom">
+		<div class="modal-content" style="background:#fff; min-width:300px; max-width:92vw;">
+			<h4 class="mb-2">Ủng hộ giải cho lần sau</h4>
+			<p class="mb-2" style="font-weight:normal; max-width:320px;">Bạn có chắc muốn ủng hộ giải thưởng của mình cho lần sau không? Một lời cảm ơn sẽ được gửi vào nhóm chat chung.</p>
+			<div id="donate-msg" class="mb-2"></div>
+			<div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:8px;">
+				<button class="btn btn-success" id="donate-yes">Xác nhận</button>
+				<button class="btn btn-secondary" id="donate-no">Hủy</button>
+			</div>
+		</div>
+	</div>
 	<div id="modal-prize" class="modal-custom">
 		<div class="modal-content" style="background:#fff; min-width:320px; max-width:92vw;">
 			<h4 class="mb-2">Nhận giải</h4>
@@ -114,6 +125,7 @@
 			<h4 class="m-0">Trò chơi đã tạm dừng!</h4>
 		</div>
 	</div>
+	<div class="brand-corner"><img src="./image/logobrc.png" alt="Brycen"></div>
 	<div class="content">
 		<!-- <img src="./image/logobrc.png" class="img-den-long"> -->
 		<div class="content-child">
@@ -164,6 +176,7 @@
 					</div>
 					<!-- Nhận giải + Chat riêng (extra.js) -->
 					<div class="col-12 my-2" style="display:flex; gap:8px; justify-content:end;">
+						<button class="btn btn-danger hidden" id="btnDonate">Ủng hộ giải cho lần sau</button>
 						<button class="btn btn-warning" id="btnPrize" disabled>Nhận giải</button>
 						<button class="btn btn-info" id="btnPmChat" disabled>Chat</button>
 					</div>
@@ -412,7 +425,7 @@
 			<div class="footer-text">
 				<span> ©2023 BRYCEN VietNam <br>
 					PippiWeb Team<br>
-					<a href="skype:mybrothervnn?chat">Report Bug via Skype</a>
+					<a href="chat.html?to=BRYCENVN016" target="bingoChat" id="reportBug">Report Bug to Admin</a>
 				</span>
 			</div>
 			<div><img alt="..." class="logo" src="./image/game_link_qr.png" style="width: 70px;"></div>

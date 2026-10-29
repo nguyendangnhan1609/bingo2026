@@ -77,6 +77,9 @@ module.exports = function (ctx) {
   const findUser = (id) => (ctx.userList() || []).find((x) => x.id === id);
   const room = (id) => "u:" + id;
   const adminSockets = new Set();
+  const donated = new Set();
+  const escHtml = (s) =>
+    String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   function totalUnread(id) {
     let n = 0;
@@ -139,6 +142,28 @@ module.exports = function (ctx) {
         adminSockets.forEach((s) => s.emit("prize-list", Object.values(prizes)));
       } catch (e) {
         console.error("[extra] prize-submit", e);
+      }
+    });
+
+    // Ủng hộ giải cho lần sau: chỉ người đang trong danh sách trúng giải, mỗi lượt trúng 1 lần
+    client.on("donate-prize", function (data) {
+      try {
+        const u = auth(data && data.token);
+        if (!u) return client.emit("donate-error", "Vui lòng đăng nhập lại.");
+        const w = (ctx.lstWinner() || []).find((x) => x.id === u.id);
+        if (!w) return client.emit("donate-error", "Bạn không có trong danh sách trúng giải.");
+        const key = u.id + "|" + w.index + "|" + w.time;
+        if (donated.has(key)) return client.emit("donate-error", "Bạn đã ủng hộ rồi, cảm ơn bạn!");
+        donated.add(key);
+        const time = String((data && data.time) || "").slice(0, 12);
+        ctx.postNotice(
+          "Xin chân thành cảm ơn <b>" + escHtml(u.name) + "</b> đã trúng <b>Giải " + w.index +
+            "</b> và quyết định <b><u>ủng hộ giải thưởng cho lần sau</u></b>! 💖 Chúc bạn luôn vui vẻ và may mắn! 🎉",
+          time
+        );
+        client.emit("donate-ok");
+      } catch (e) {
+        console.error("[extra] donate-prize", e);
       }
     });
 

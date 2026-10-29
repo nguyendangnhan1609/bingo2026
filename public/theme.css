@@ -39,3 +39,129 @@ body {
 @media (prefers-reduced-motion: reduce) {
   #petals { display: none; }
 }
+
+/* ===== Logo góc trên bên trái ===== */
+.brand-corner {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 14px;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 14px rgba(150, 50, 30, 0.28), 0 0 0 3px rgba(255, 201, 60, 0.55);
+  backdrop-filter: blur(4px);
+}
+.brand-corner img {
+  display: block;
+  height: 44px;
+  width: auto;
+}
+@media (max-width: 991px) {
+  /* màn hình nhỏ: logo nằm trong luồng trang, căn giữa, không đè tiêu đề */
+  .brand-corner {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: fit-content;
+    margin: 8px auto 0;
+  }
+  .brand-corner img { height: 36px; }
+}
+
+/* ===== Tiêu đề Brycen Bingo ===== */
+h1.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35em;
+  margin: 0.2em 0 0.1em;
+}
+h1.title::before,
+h1.title::after {
+  content: "\2605"; /* ★ */
+  font-size: 0.55em;
+  color: #ffc93c;
+  filter: drop-shadow(0 1px 2px rgba(150, 50, 30, 0.5));
+  animation: title-twinkle 2.4s ease-in-out infinite;
+}
+h1.title::after { animation-delay: 1.2s; }
+h1.title .text-brycen {
+  font-family: "Mitr-Regular", "Mitr", Arial, sans-serif;
+  letter-spacing: 0.06em;
+  background: linear-gradient(180deg, #ff4d4d 0%, #d4141c 55%, #a30d18 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: none;
+  /* viền trắng + vàng và bóng đổ nhẹ để nổi trên nền cam */
+  filter:
+    drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff)
+    drop-shadow(0 2px 0 #ffc93c)
+    drop-shadow(0 5px 6px rgba(120, 20, 20, 0.35));
+}
+@keyframes title-twinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.9; }
+  50% { transform: scale(1.35) rotate(20deg); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  h1.title::before, h1.title::after { animation: none; }
+}
+
+/* ===== Footer ===== */
+#footer {
+  margin-top: 14px;
+  padding: 12px 20px;
+  gap: 28px;
+  align-items: center;
+  flex-wrap: wrap;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 244, 232, 0.95) 100%);
+  border-top: 3px solid #ffc93c;
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -4px 16px rgba(150, 50, 30, 0.18);
+  backdrop-filter: blur(4px);
+}
+#footer .logo[src*="logobrc"] {
+  width: auto !important;
+  height: 40px;
+}
+#footer .logo[src*="game_link_qr"] {
+  width: 64px !important;
+  height: 64px;
+  padding: 3px;
+  background: #fff;
+  border: 2px solid #ffc93c;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(150, 50, 30, 0.2);
+}
+#footer .footer-text {
+  color: #7a2a1e;
+  line-height: 1.55;
+  font-size: 0.85em;
+  text-align: center;
+}
+#footer .footer-text a {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 3px 14px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ff6a5a 0%, #d4141c 100%);
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(150, 50, 30, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#footer .footer-text a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(150, 50, 30, 0.4);
+}
+@media (max-width: 767px) {
+  #footer { gap: 14px; padding: 10px 12px; justify-content: space-around; }
+  #footer .logo[src*="logobrc"] { height: 32px; }
+  #footer .logo[src*="game_link_qr"] { width: 52px !important; height: 52px; }
+}

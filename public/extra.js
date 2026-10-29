@@ -58,6 +58,61 @@
     window.open("chat.html", "bingoChat");
   });
 
+  // ----- Report Bug to Admin: mở chat với admin ở tab mới -----
+  $("#reportBug").on("click", function () {
+    try {
+      var t = token();
+      if (t) localStorage.setItem("pm_token", t);
+    } catch (e) {}
+  });
+
+  // ----- Ủng hộ giải cho lần sau (chỉ hiện với người trong danh sách trúng giải) -----
+  var $donate = $("#btnDonate");
+  function refreshDonate() {
+    var win =
+      myId &&
+      typeof lstWinnerLocal !== "undefined" &&
+      lstWinnerLocal &&
+      lstWinnerLocal.some(function (u) {
+        return u.id == myId;
+      });
+    $donate.toggleClass("hidden", !win);
+  }
+  socket.on("login-success", function () {
+    setTimeout(refreshDonate, 300);
+  });
+  socket.on("lstWinner", function () {
+    setTimeout(refreshDonate, 0); // chờ client.js cập nhật lstWinnerLocal
+  });
+  socket.on("restart", function () {
+    setTimeout(refreshDonate, 500);
+  });
+  $("#btnLogout").on("click", function () {
+    $donate.addClass("hidden");
+  });
+  $donate.on("click", function () {
+    $("#donate-msg").text("");
+    $("#donate-yes").prop("disabled", false);
+    $("#modal-donate").addClass("show-modal");
+  });
+  $("#donate-no").on("click", function () {
+    $("#modal-donate").removeClass("show-modal");
+  });
+  $("#donate-yes").on("click", function () {
+    $(this).prop("disabled", true);
+    socket.emit("donate-prize", {
+      token: token(),
+      time: typeof formatDate === "function" ? formatDate(new Date()) : "",
+    });
+  });
+  socket.on("donate-ok", function () {
+    $("#modal-donate").removeClass("show-modal");
+  });
+  socket.on("donate-error", function (msg) {
+    $("#donate-msg").text(msg).css("color", "#c00");
+    $("#donate-yes").prop("disabled", false);
+  });
+
   // ----- nhận giải -----
   function showMsg(text, ok) {
     $("#prize-msg").text(text).css("color", ok ? "#080" : "#c00");

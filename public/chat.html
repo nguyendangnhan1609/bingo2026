@@ -97,6 +97,8 @@
   } catch (e) {}
   var socket = io.connect(window.location.origin, { query: { token: tk } });
   var me = null, users = [], sessions = {}, current = null, history = {}, emojiList = [];
+  var autoTo = null;
+  try { autoTo = new URLSearchParams(location.search).get("to"); } catch (e) {}
   var LIKE = "👍";
 
   function esc(s) {
@@ -149,6 +151,12 @@
     d.sessions.forEach(function (s) { sessions[s.sid] = s; });
     drawList();
     if (current && sessions[current]) socket.emit("pm-open", current);
+    // mở sẵn phiên với người được chỉ định (vd: Report Bug to Admin)
+    if (autoTo) {
+      var to = autoTo;
+      autoTo = null;
+      if (to !== me.id) socket.emit("pm-create", to);
+    }
   });
   socket.on("pm-session", function (s, select) {
     sessions[s.sid] = s;

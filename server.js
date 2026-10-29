@@ -1264,6 +1264,16 @@ try {
     maxChatListLeng,
     userList: () => userList,
     gameCode: () => gameCode,
+    lstWinner: () => lstWinner,
+    // đăng 1 thông báo vào group chat tổng (cùng định dạng tin "Thông báo" của bingo)
+    postNotice: (html, time) => {
+      messList.push({ ip: "Thông báo", user: "Thông báo", data: html, time: time });
+      if (messList.length == maxChatListLeng + 1) {
+        messList.shift();
+      }
+      io.emit("send-mess-list", messList, loginFlag);
+      io.emit("send-mess-list-box", messList, loginFlag);
+    },
   });
 } catch (e) {
   console.error("[extra-features] load error", e);
