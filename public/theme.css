@@ -1,0 +1,41 @@
+/* Giao diện Tết ấm + cánh hoa rơi. Gỡ 2 thẻ theme.css/fx.js trong index.html để quay lại giao diện cũ. */
+body {
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 45%),
+    linear-gradient(160deg, #FFE3B3 0%, #FFB88C 55%, #E8806A 100%);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* ẩn tuyết cũ */
+.snowflakes { display: none !important; }
+
+/* cánh hoa */
+#petals {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+.petal {
+  position: absolute;
+  top: -5vh;
+  border-radius: 150% 0 150% 0;
+  background: linear-gradient(135deg, #ffd6e0 0%, #ff8fab 100%);
+  box-shadow: 0 0 2px rgba(255, 255, 255, 0.6) inset;
+  will-change: transform;
+  animation: petal-fall linear infinite;
+}
+.petal.gold { background: linear-gradient(135deg, #fff2a8 0%, #ffc93c 100%); }
+@keyframes petal-fall {
+  0%   { transform: translate3d(0, -5vh, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: var(--op, 0.85); }
+  50%  { transform: translate3d(var(--sway, 40px), 50vh, 0) rotate(calc(var(--rot, 360deg) / 2)); }
+  90%  { opacity: var(--op, 0.85); }
+  100% { transform: translate3d(calc(var(--sway, 40px) * -0.5), 108vh, 0) rotate(var(--rot, 360deg)); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #petals { display: none; }
+}
