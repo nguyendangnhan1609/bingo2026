@@ -15,6 +15,8 @@
   function setEnabled(on) {
     $prize.prop("disabled", !on);
     $chat.prop("disabled", !on);
+    // chỉ hiện hàng nút khi đã đăng nhập để không làm cao thêm phần header lúc chưa đăng nhập
+    $("#extraBtnRow").toggleClass("hidden", !on);
     if (!on) $chat.text("Chat");
   }
   function setUnread(n) {
