@@ -1257,6 +1257,7 @@ function loadData() {
 // Chức năng bổ sung (Nhận giải + Chat riêng) - module độc lập, lỗi không ảnh hưởng game
 try {
   require("./extra-features")({
+    app,
     io,
     jwt,
     secret,
